@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CP Revenue Projection</title>
+  <link href='http://fonts.googleapis.com/css?family=Oswald:700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="revenue.js"></script>
+  <script>
+    $(function() {
+      $('#mite-apikey').on('input', function() {
+        getFinancialMetrics('creativepragmatics', $('#mite-apikey').val(), function(projection_per_year, projection_per_last_4_weeks, projection_per_last_7_days) {
+              $('#projection-per-year .number').text(projection_per_year);
+              $('#projection-per-4-weeks .number').text(projection_per_last_4_weeks);
+              $('#projection-per-7-days .number').text(projection_per_last_7_days);
+          }
+        );
+      });
+    });
+  </script>
+  <link href="revenue.css" rel="stylesheet" type="text/css" title="Default Style">
+</head>
+<body>
+  <form id="api-key-form">
+    <label for="mite-apikey">Mite API Key: </label>
+    <input type="password" id="mite-apikey" autocomplete="on">
+  </form>
+
+  <div id="projection-per-year">
+    <div class="number">...</div>
+    <div class="subtext">Projection based on current year</div>
+  </div>
+  <div id="projection-per-4-weeks">
+    <div class="number">...</div>
+    <div class="subtext">Projection based on last 4 weeks</div>
+  </div>
+  <div id="projection-per-7-days">
+    <div class="number">...</div>
+    <div class="subtext">Projection based on last 7 days</div>
+  </div>
+</body>
+</html>

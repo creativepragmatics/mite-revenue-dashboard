@@ -1,0 +1,42 @@
+body {
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+}
+
+#mite-apikey {
+  background: white;
+  border: 2px solid gray;
+  padding: 10px;
+  margin-left: 10px;
+  margin-bottom: 50px;
+}
+
+.btn {
+  background: gray;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  padding: 10px;
+}
+
+#projection-per-year, #projection-per-4-weeks, #projection-per-7-days {
+  display: inline-block;
+  width: 280px; 
+  height: 120px; 
+  text-align: center; 
+  margin-top: 20px;
+}
+
+.number {
+  font-family: 'Oswald', sans-serif;
+  height: 90px;
+  font-size: 4em;
+}
+
+.subtext {
+  font-size: 0.8em;
+  color: gray;
+}
+
+#api-key-form {
+}

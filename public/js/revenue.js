@@ -285,37 +285,38 @@
 
   // resultCallback: function(projection_per_year, projection_per_last_4_weeks, projection_per_last_7_days)
   window.getFinancialMetrics = function(mite_account, mite_api_key, resultCallback) {
+    var year = new Date().getFullYear();
     var mite = new Mite({account: mite_account, api_key: mite_api_key});
-    mite.TimeEntry.all({"year": 2014}, function(time_entry_wrappers) {
-      var days_remaining_this_year = getDaysInCurrentYear() - getDayInCurrentYear();
+    mite.TimeEntry.all({"year": year}, function(time_entry_wrappers) {
+      var days_remaining_this_year = getDaysInCurrentYear() - getDayInCurrentYear();      
       var fourWeeksAgo = new Date();
       fourWeeksAgo.setDate(fourWeeksAgo.getDate() - 28);
       var oneWeekAgo = new Date();
       oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
       var entries = _.map(time_entry_wrappers, function(time_entry_wrapper) { return time_entry_wrapper.time_entry; });
-      var entries_this_year = _.filter(entries, function(time_entry) { return time_entry.date_at.indexOf("2014") == 0; });
-      var entries_last_4_weeks = _.filter(entries_this_year, function(time_entry) { 
+      var entries_this_year = _.filter(entries, function(time_entry) { return time_entry.date_at.indexOf(year) == 0; });
+      var entries_last_4_weeks = _.filter(entries_this_year, function(time_entry) {
         return new Date(time_entry.created_at) > fourWeeksAgo;
       });
-      var entries_last_week = _.filter(entries_last_4_weeks, function(time_entry) { 
+      var entries_last_week = _.filter(entries_last_4_weeks, function(time_entry) {
         return new Date(time_entry.created_at) > oneWeekAgo;
       });
       var rev_this_year = _.reduce(entries_this_year, function(memo, time_entry) {
-        return memo + time_entry.hourly_rate * (time_entry.minutes / 60.0); 
+        return memo + time_entry.hourly_rate * (time_entry.minutes / 60.0);
       }, 0);
       var rev_last_4_weeks = _.reduce(entries_last_4_weeks, function(memo, time_entry) {
-        return memo + time_entry.hourly_rate * (time_entry.minutes / 60.0); 
+        return memo + time_entry.hourly_rate * (time_entry.minutes / 60.0);
       }, 0);
       var rev_per_day_in_last_4_weeks = rev_last_4_weeks / 28;
       var rev_last_week = _.reduce(entries_last_week, function(memo, time_entry) {
-        return memo + time_entry.hourly_rate * (time_entry.minutes / 60.0); 
+        return memo + time_entry.hourly_rate * (time_entry.minutes / 60.0);
       }, 0);
       var rev_per_day_in_last_week = rev_last_week / 7;
 
       var projection_per_year = Math.round(rev_this_year * (getDaysInCurrentYear() / getDayInCurrentYear() / 100.0));
       var projection_per_last_4_weeks = Math.round((rev_this_year + rev_per_day_in_last_4_weeks * days_remaining_this_year) / 100.0);
       var projection_per_last_7_days = Math.round((rev_this_year + rev_per_day_in_last_week * days_remaining_this_year) / 100.0);
-      
+
       resultCallback(projection_per_year, projection_per_last_4_weeks, projection_per_last_7_days);
     });
   };
@@ -332,6 +333,6 @@
     });
   };
   $.fn.prettynumber.defaults = {
-    delimiter       : '.' 
+    delimiter       : '.'
   };
 })(jQuery);
